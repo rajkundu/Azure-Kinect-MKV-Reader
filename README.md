@@ -1,29 +1,35 @@
-Simple easy-to-use hacky matroska parser
+# AzureKinectMKVReader
 
-Define your handler class:
+## A class for reading Azure Kinect DK MKV files in Python 3
+### Benefits:
+- Runs nearly universally – reads file byte-by-byte, **_does NOT_** depend on the Azure Kinect SDK
+### Limitations:
+- No "seek"/"skip" support
+  - I think this could be implemented? I just don't need it, so I didn't implement it. Please contact me or file an issue to discuss!
+- No current IMU data support...
+  - This is actually very easy to implement but was removed for convenience of defining a "frameset": Azure Kinect DK image data occurs only once per Matroska cluster, but IMU data occurs several times, so it was decided to just ignore IMU data for now to simplify things. However, the data is there and readable. Please contact me or file an issue if you'd like discuss adding support for reading IMU data!
 
-    class MyMatroskaHandler(mkvparse.MatroskaHandler):
-        def tracks_available(self):
-            ...
+## Usage
+```python
+from mkv_reader import MKVReader, TRACK
 
-        def segment_info_available(self):
-            ...
+# Initialize MKVReader object
+reader = MKVReader("./recording.mkv")
+calib = reader.get_calibration()
 
-        def frame(self, track_id, timestamp, data, more_laced_blocks, duration, keyframe_flag, invisible_flag, discardable_flag):
-            ...
+while True:
+  try:
+    frameset = reader.get_next_frameset()
+  except EOFError:
+    break
 
-and `mkvparse.mkvparse(file, MyMatroskaHandler())`
+  # Use frameset...
+  color_img = frameset[TRACK.COLOR]
+```
+Please see [example.py](example.py) for a more detailed example!
 
+## Contributions
+Any feedback and/or contributions are extremely welcome! :)
 
-Supports lacing and setting global timecode scale, subtitles (BlockGroup). Does not support cues, tags, chapters, seeking and so on. Supports resyncing when something bad is encountered in matroska stream.
-
-Also contains example of generation of Matroska files from python
-
-Also contains mkv2xml and xml2mkv: tools that convert Matroska files to/from XML plaintext. [Example XML file](http://vi-server.org/pub/xml2mkv_test.xml) . Example command:
-
-    $ cat test3.mkv | ./mkv2xml | ./xml2mkv | mplayer - # convert to XML and back and play
-
-Subtitles should remain as text, binary data gets encoded to hex.
-
-
-Licence=MIT
+## License
+License = MIT
