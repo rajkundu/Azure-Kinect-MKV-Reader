@@ -1,4 +1,4 @@
-# AzureKinectMKVReader
+# Azure Kinect MKV Reader
 
 ## A class for reading Azure Kinect DK MKV files in Python 3
 ### Benefits:
