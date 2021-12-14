@@ -1,5 +1,0 @@
-*.pyc
-*.mkv
-mkvparse.egg-info/
-build/
-dist/
