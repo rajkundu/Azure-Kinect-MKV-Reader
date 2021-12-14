@@ -1,15 +1,6 @@
-# Licence==MIT; Vitaly "_Vi" Shukela 2012
-
-# Simple easy-to-use hacky matroska parser
-
-# Supports SimpleBlock and BlockGroup, lacing, TimecodeScale.
-# Does not support seeking, cues, chapters and other features.
-# No proper EOF handling unfortunately
-
-from struct import unpack
-
 import sys
 import os
+from struct import unpack
 import datetime
 import binascii
 import json
@@ -562,7 +553,7 @@ class MKVReader():
             self.print_metadata()
     
     def print_file_info(self, end=""):
-        print(f"Filename: {os.path.basename(self.filepath)}")
+        print(f"Filename: {self.filename}")
         print(f"Filepath: {self.filepath}")
         print("Tracks:")
         for k in self.tracks:
